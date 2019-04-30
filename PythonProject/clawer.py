@@ -6,10 +6,13 @@ import re
 
 class clawer(object):
 
-    def __init__(self, pageprocess, homepage, prefix):
+    def __init__(self, homepage, prefix):
         self.prefix = prefix
-        self.pageprocess = pageprocess
+        self.pageProcesses = []
         self.homepage = homepage
+
+    def registPageProcess(self, pageprocess):
+        self.pageProcesses.append(pageprocess)
 
     def html(self, pageurl):
         head = {}
@@ -21,8 +24,8 @@ class clawer(object):
     def getlinks(self, pageurl, maxlevel=1):
         html = self.html(pageurl)
         bsobj = BeautifulSoup(html)
-        if self.pageprocess is not None:
-            self.pageprocess.process(html, bsobj, pageurl, maxlevel),
+        for item in self.pageProcesses:
+            item.process(html, bsobj, pageurl, maxlevel)
         if maxlevel > 0:
             links = bsobj.findAll("a", href=re.compile("^(/"+self.prefix+"/)"))
             maxlevel -= 1
@@ -31,5 +34,3 @@ class clawer(object):
                     newpage = link.attrs['href']
                     self.getlinks(newpage, maxlevel)
         return
-
-    
