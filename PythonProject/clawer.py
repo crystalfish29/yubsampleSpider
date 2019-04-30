@@ -21,16 +21,16 @@ class clawer(object):
         html = urlopen(req)
         return html
 
-    def getlinks(self, pageurl, maxlevel=2):
+    def getlinks(self, pageurl, maxlevel=1):
         html = self.html(pageurl)
         bsobj = BeautifulSoup(html)
         for item in self.pageProcesses:
             item.process(html, bsobj, pageurl, maxlevel)
-        if maxlevel > 0:
+        maxlevel -= 1
+        if maxlevel >= 0:
             links = bsobj.findAll("a", href=re.compile("^(/"+self.prefix+"/)"))
-            currentlevel = maxlevel -1
             for link in links:
                 if 'href' in link.attrs:
                     newpage = link.attrs['href']
-                    self.getlinks(newpage, currentlevel)
+                    self.getlinks(newpage, maxlevel)
         return

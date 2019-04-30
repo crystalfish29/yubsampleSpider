@@ -8,7 +8,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 process = pageprocess()
 clawer = clawer("https://www.runoob.com/","python")
 clawer.registPageProcess(process)
-clawer.getlinks("python")
+clawer.getlinks("python",1)
 
 
 
