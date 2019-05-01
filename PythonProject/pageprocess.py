@@ -1,7 +1,8 @@
 class pageprocess(object):
 
+    
     def __init__(self):
-        pass
+        self.name = 'python' #用于指定调用哪个页面处理程序
 
     def process(self, html, bsobj, pageurl, level):
         obj= bsobj.find('div',{'id':'content'}).h1.text

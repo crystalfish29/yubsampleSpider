@@ -2,17 +2,16 @@ from urllib.request import urlopen
 from urllib import request
 from bs4 import BeautifulSoup
 import re
+from distributer import  distributer
 
 
 class clawer(object):
 
     def __init__(self, homepage, prefix):
         self.prefix = prefix
-        self.pageProcesses = []
         self.homepage = homepage
+        self.distributer = distributer()
 
-    def registPageProcess(self, pageprocess):
-        self.pageProcesses.append(pageprocess)
 
     def html(self, pageurl):
         head = {}
@@ -24,8 +23,7 @@ class clawer(object):
     def getlinks(self, pageurl, maxlevel=1):
         html = self.html(pageurl)
         bsobj = BeautifulSoup(html)
-        for item in self.pageProcesses:
-            item.process(html, bsobj, pageurl, maxlevel)
+        self.distributer.distribute(html, bsobj, pageurl, maxlevel)
         maxlevel -= 1
         if maxlevel >= 0:
             links = bsobj.findAll("a", href=re.compile("^(/"+self.prefix+"/)"))
