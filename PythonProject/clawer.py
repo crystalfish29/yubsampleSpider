@@ -1,9 +1,9 @@
-from urllib.request import urlopen
-from urllib import request
+import requests
 from bs4 import BeautifulSoup
 import re
-from distributer import  distributer
-
+from distributer import distributer
+import string
+# coding=gbk
 
 class clawer(object):
 
@@ -12,13 +12,13 @@ class clawer(object):
         self.homepage = homepage
         self.distributer = distributer()
 
-
     def html(self, pageurl):
-        head = {}
-        head['User-Agent'] = 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166  Safari/535.19'
-        req = request.Request(self.homepage+pageurl, headers=head)
-        html = urlopen(req)
-        return html
+        session = requests.Session()
+        header = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit 537.36 (KHTML, like Gecko) Chrome",
+                  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"}
+        req = session.get(self.homepage + pageurl, headers=header)
+        req.encoding='utf-8'
+        return  req.text
 
     def getlinks(self, pageurl, maxlevel=1):
         html = self.html(pageurl)
