@@ -13,8 +13,7 @@ driver = webdriver.Chrome('/usr/local/bin/chromedriver',
 wait = WebDriverWait(driver, timeout=10)
 driver.get('http://pythonscraping.com/pages/javascript/ajaxDemo.html')
 try:
-    wait.until(expected.visibility_of_element_located(
-        (By.ID, "loadedButton"))).click()
+    wait.until(expected.visibility_of_element_located((By.ID, "loadedButton"))).click()
 finally:
     print(driver.find_element_by_id('content').text)
    # print(driver.page_source)
