@@ -6,12 +6,10 @@ class distributer(object):
 
     def __init__(self):
         self.pageProcesses = []
+    
     # 分发信息 确定是调用哪个页面处理程序
-
     def distribute(self, html, bsobj, pageurl, level):
-        url = re.sub('https|http', '', pageurl)
-        url = re.sub(':|//', '', url)
-
+        url = self.urlClear(pageurl)
         urlitems = url.split('/')
         if len(urlitems) >= 2:
             flag = urlitems[1]
@@ -22,6 +20,12 @@ class distributer(object):
             else:
                 continue
 
+    def urlClear(self, pageurl):
+        url = re.sub('https://|http://', '', pageurl)
+        url = re.sub('//', '/', url)
+        return url
+
     # 注册页面处理程序
+
     def registPageProcess(self, pageprocess):
         self.pageProcesses.append(pageprocess)
