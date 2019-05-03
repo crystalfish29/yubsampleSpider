@@ -3,7 +3,7 @@ class distributer(object):
 
     def __init__(self):
         self.pageProcesses = []
-    #分发信息
+    #分发信息 确定是调用哪个页面处理程序
     def distribute(self, html, bsobj, pageurl, level):
         for process in self.pageProcesses:
             process.process(html, bsobj, pageurl, level)
