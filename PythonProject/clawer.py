@@ -21,16 +21,16 @@ class clawer(object):
         req.encoding = 'utf-8'
         return req.text
 
-    def getlinks(self, pageurl, maxlevel=1):
+    def getlinks(self, pageurl, depth=1):
         html = self.html(pageurl)
         bsobj = BeautifulSoup(html)
-        self.distributer.distribute(
-            html, bsobj, self.homepage+pageurl, maxlevel)
-        maxlevel -= 1
-        if maxlevel >= 0:
-            links = bsobj.findAll("a", href=re.compile("^(/"+self.prefix+"/)"))
-            for link in links:
-                if 'href' in link.attrs:
-                    newpage = link.attrs['href']
-                    self.getlinks(newpage, maxlevel)
-        return
+        self.distributer.distribute(html, bsobj, self.homepage+pageurl, depth)
+        
+        if depth < 1:
+            return
+        
+        links = bsobj.findAll("a", href=re.compile("^(/"+self.prefix+"/)"))
+        for link in links:
+            if 'href' in link.attrs:
+                newpage = link.attrs['href']
+                self.getlinks(newpage, depth-1)
